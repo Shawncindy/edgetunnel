@@ -36,3 +36,7 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 log/
+
+# 本地档案（个人笔记，不提交）
+USAGE.md
+HISTORY-*.md
