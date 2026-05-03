@@ -1,7 +1,2 @@
 name = "v20251104"
 compatibility_date = "2025-11-04"
-pages_build_output_dir = "."
-
-[[kv_namespaces]]
-binding = "KV"
-id = "5b80284aaee943aa8c1bf63ae6ede116"
