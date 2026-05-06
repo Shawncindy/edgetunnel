@@ -346,10 +346,20 @@ export default {
 								const 请求优选API内容 = await 请求优选API(优选API, (协议类型 === 'ss' && !config_JSON.SS.TLS) ? '80' : '443');
 								const 合并其他节点数组 = [...new Set(其他节点.concat(请求优选API内容[1]))];
 								其他节点LINK = 合并其他节点数组.length > 0 ? 合并其他节点数组.join('\n') + '\n' : '';
-								const 优选API的IP = 请求优选API内容[0];
-								反代IP池 = 请求优选API内容[3] || [];
-								完整优选IP = [...new Set(优选IP.concat(优选API的IP))];
-							} else { // 优选订阅生成器
+									const 优选API的IP = 请求优选API内容[0];
+									反代IP池 = 请求优选API内容[3] || [];
+									完整优选IP = [...new Set(优选IP.concat(优选API的IP))];
+									if (config_JSON.优选订阅生成.优选IP作为反代IP !== false) {
+										const 默认优选端口 = (协议类型 === 'ss' && !config_JSON.SS.TLS) ? '80' : '443';
+										const 解析为反代IP = (原始地址) => {
+											const regex = /^(\[[\da-fA-F:]+\]|[\d.]+|[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?)*)(?::(\d+))?(?:#(.+))?$/;
+											const match = 原始地址.match(regex);
+											if (!match) return null;
+											return `${match[1]}:${match[2] || 默认优选端口}`;
+										};
+										反代IP池 = [...new Set(反代IP池.concat(完整优选IP.map(解析为反代IP).filter(Boolean)))];
+									}
+								} else { // 优选订阅生成器
 								let 优选订阅生成器HOST = url.searchParams.get('sub') || config_JSON.优选订阅生成.SUB;
 								const [优选生成器IP数组, 优选生成器其他节点] = await 获取优选订阅生成器数据(优选订阅生成器HOST);
 								完整优选IP = 完整优选IP.concat(优选生成器IP数组);
